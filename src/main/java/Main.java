@@ -5,8 +5,7 @@ public class Main {
         Receiver receiver = new Receiver();
         Checker checker = new Checker();
         Sender sender = new Sender();
-        ErrorLogger errorLogger = new ErrorLogger();
-        Server server = new Server(receiver, checker, sender, errorLogger);
+        Server server = new Server(receiver, checker, sender);
         server.transport();
     }
 }

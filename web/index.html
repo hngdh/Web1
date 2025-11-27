@@ -70,6 +70,10 @@
             border-radius: 25px;
         }
 
+        .upper-panel::-webkit-scrollbar, .lower-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+            display: none;
+        }
+
         .left-panel {
             display: flex;
             flex-direction: column;
@@ -209,7 +213,7 @@
                 <div class="label-area">
                     Parameters
                 </div>
-                <form id="input-form" method="get" action="/fcgi/lab1.jar">
+                <form id="input-form" method="post" action="/fcgi/lab1.jar">
                     <div class="input-zone">
                         <label class="labels" id="labelX"> Coordinate X: </label>
                         <div class="options" id="xOptions">
@@ -267,7 +271,6 @@
                 <canvas id="graph"></canvas>
             </div>
         </div>
-
 
         <div class="right-panel">
             <div class="label-area">

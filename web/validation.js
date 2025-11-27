@@ -10,7 +10,6 @@ const labelY = document.getElementById('labelY');
 const labelR = document.getElementById('labelR');
 const RBlock = document.getElementById('rBlock');
 const form = document.getElementById('input-form');
-const submitStatus = document.getElementById('submitStatus')
 const resTable = document.getElementById('res-table');
 
 function validateNumberInRange(val, start, end) {
@@ -92,13 +91,20 @@ form.addEventListener('submit', async(e) => {
         else labelR.classList.add('valid');
         return;
     }
-    const params = new URLSearchParams(new FormData(form)).toString();
-    const url = form.action + '?' + params;
-    console.log(url);
-    fetch(url,{
-        headers: {'Accept': 'application/json'}
-    }).then(resp => {
-        if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    let formData = new FormData(form);
+    const formDataObj = {};
+    formData.forEach((value, key) => {
+        formDataObj[key] = value;
+    });
+    fetch(form.action,{
+        method: 'POST',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify(formDataObj)
+    }).then(async resp => {
+        if (!resp.ok) {
+            console.error('Fetch Error: HTTP' + resp.status);
+            throw new Error(await resp.text());
+        }
         return resp.json();
     }).then(data => {
         const newRow = resTable.insertRow(1);
@@ -110,14 +116,13 @@ form.addEventListener('submit', async(e) => {
               <td>${data.calTime}</td>
               <td>${data.printTime}</td>`;
     }).catch(err => {
-        console.error('Fetch Error: ', err);
-        alert('Error in server calling: ' + err.message);
+        alert('Server ' + err);
     })
 });
 
-// document.getElementById('submit-button').addEventListener('pointerover', function() {
-//     this.textContent = 'Submit ➜';
-// });
-// document.getElementById('submit-button').addEventListener('pointerleave', function() {
-//     this.textContent = 'Submit';
-// });
+document.getElementById('submit-button').addEventListener('pointerover', function() {
+    this.textContent = 'Submit ➜';
+});
+document.getElementById('submit-button').addEventListener('pointerleave', function() {
+    this.textContent = 'Submit';
+});

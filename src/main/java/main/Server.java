@@ -9,16 +9,14 @@ public class Server {
     private final Receiver receiver;
     private final Checker checker;
     private final Sender sender;
-    private final ErrorLogger errorLogger;
     private final String FCGI_PORT = "FCGI_PORT";
     private final String NUM_FCGI_PORT = "40405";
     private final List<Result> history = new LinkedList<>();
 
-    public Server(Receiver receiver, Checker checker, Sender sender, ErrorLogger errorLogger) {
+    public Server(Receiver receiver, Checker checker, Sender sender) {
         this.receiver = receiver;
         this.checker = checker;
         this.sender = sender;
-        this.errorLogger = errorLogger;
     }
 
     public void transport() {
@@ -35,9 +33,8 @@ public class Server {
                 this.history.add(result);
                 this.sender.sendJson(result);
             } catch (InputError e) {
-                this.errorLogger.badRequest(e.getMessage());
+                ErrorLogger.badRequest(e.getMessage());
             }
         }
-
     }
 }

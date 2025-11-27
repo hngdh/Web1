@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Receiver {
-    private final String MALFORMED_QUERY_STRING = "Bad Request: malformed query string";
+    private final String MALFORMED_QUERY_STRING = "Malformed query string";
 
     List<Float> readRequest() throws InputError {
         Properties env = System.getProperties();
         String qs = env.getProperty("QUERY_STRING", "");
         Map<String, String> params = new HashMap();
         if (!qs.isEmpty()) {
-            for(String pair : qs.split("&")) {
+            for (String pair : qs.split("&")) {
                 if (!pair.isEmpty()) {
                     String[] kv = pair.split("=", 2);
                     if (kv.length != 2) {
@@ -54,14 +54,10 @@ public class Receiver {
             throw new InputError(MALFORMED_QUERY_STRING);
         }
 
-        if (!Checker.checkLength(xStr)) {
-            throw new InputError("Bad Request: X is too long. Please write only 4 numbers after decimal point.");
-        } else if (!Checker.checkLength(yStr)) {
-            throw new InputError("Bad Request: Y is too long. Please write only 4 numbers after decimal point.");
-        } else if (!Checker.checkLength(RStr)) {
-            throw new InputError("Bad Request: Y is too long. Please write only 4 numbers after decimal point.");
-        } else {
-            return List.of(x, y, R);
+        if (!Checker.checkLength(yStr)) {
+            throw new InputError("Y is too long");
         }
+
+        return List.of(x, y, R);
     }
 }
